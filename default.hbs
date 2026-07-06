@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="{{@site.locale}}" {{#match @custom.color_scheme "Dark"}} class="dark-mode"
+    {{else match @custom.color_scheme "Auto"}} class="auto-color" {{/match}}>
+
+<head>
+
+    {{!-- Basic meta - advanced meta is output with {ghost_head} below --}}
+    <title>{{meta_title}}</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {{!-- Theme assets - use the {asset} helper to reference styles & scripts,
+    this will take care of caching and cache-busting automatically --}}
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{asset "built/screen.css"}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset "built/mcdermott.css"}}" />
+
+
+
+
+
+    {{!-- This tag outputs all your advanced SEO meta, structured data, and other important settings,
+    it should always be the last tag before the closing head tag --}}
+    {{ghost_head}}
+
+    <style>
+        #particles-js {
+            pointer-events: none;
+        }
+    </style>
+
+</head>
+
+<body
+    class="{{body_class}} is-head-{{#match @custom.navigation_layout "Logo on cover"}}left-logo{{else match @custom.navigation_layout "Logo in the middle"}}middle-logo{{else}}stacked{{/match}}{{#match @custom.title_font "=" "Elegant serif"}} has-serif-title{{/match}}{{#match @custom.body_font "=" "Modern sans-serif"}} has-sans-body{{/match}}{{#if @custom.show_publication_cover}} has-cover{{/if}}">
+    <div class="viewport">
+        <!-- The overlay -->
+        <div id="mcder-mobNav" class="mcder-mobNav-overlay">
+
+            <!-- Button to close the overlay navigation -->
+            <!-- Overlay content -->
+            <div class="mcder-mobNav-overlay-content">
+                <a href="javascript:void(0)" class="close-mobNav" onclick="closeMobNav()"><i
+                        class="fa-regular fa-circle-xmark"></i></a>
+                <a href="/">Home</a>
+                <a href="/vote">Vote</a>
+                <a href="https://store.wintercrestmc.com/">Store</a>
+                <a href="/rules">Rules</a>
+            </div>
+        </div>
+
+        <!-- particles.js container -->
+        <div id="particles-js"></div>
+        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+
+        <header class="mcder-header" style="background-image: url({{asset 'img/headerwave.svg'}}), url({{img_url @site.cover_image size='xl'}})">
+            <div id="topbar">
+                <div class="inner">
+                    <div class="block left" id="mc-server">
+                        <div class="icon"><i class="fa-solid fa-snowflake"></i></div>
+                        <div class="text">
+                            <p class="platform">play.wintercrestmc.com</p>
+                            <p class="count"><span class="mc-count">0</span> players online</p>
+                        </div>
+                    </div>
+                    <a href="https://discord.gg/wintercrest" target="_blank" class="block right discord-server">
+                        <div class="text">
+                            <p class="platform">Discord Server</p>
+                            <p class="count"><span class="discord-count">0</span> users online</p>
+                        </div>
+                        <div class="icon"><i class="fab fa-discord"></i></div>
+                    </a>
+                </div>
+            </div>
+            {{!-- <img class="headerWave" src="{{asset "img/snowwave.svg"}}"> --}}
+
+
+            <div class="mobNavBar" onclick="openMobNav()"><i class="fa-solid fa-bars"></i></div>
+            <script>
+                function openMobNav() {
+                    document.getElementById("mcder-mobNav").style.height = "100%";
+                }
+
+                function closeMobNav() {
+                    document.getElementById("mcder-mobNav").style.height = "0%";
+                }
+            </script>
+<a class="headerlogo {{#unless @site.logo}} no-image{{/unless}}"
+                            href="{{@site.url}}">
+                            {{#if @site.logo}}
+                            <img src="{{@site.logo}}" alt="{{@site.title}}">
+                            {{else}}
+                            {{@site.title}}
+                            {{/if}}
+                        </a>
+            <nav class="mcder-nav">
+                <div class="mcder-gNav">
+                    <div class="mcder-gnavItem"><a href="/">HOME</a></div>
+                    <div class="mcder-gnavItem"><a href="/vote">VOTE</a></div>
+                    <div class="mcder-gnavItem logoNav">
+                         {{!-- <a class="{{#unless @site.logo}} no-image{{/unless}}"
+                            href="{{@site.url}}">
+                            {{#if @site.logo}}
+                            <img src="{{@site.logo}}" alt="{{@site.title}}">
+                            {{else}}
+                            {{@site.title}}
+                            {{/if}}
+                        </a> --}}
+                        </div>
+                    <div class="mcder-gnavItem"><a href="https://store.wintercrestmc.com/">STORE</a></div>
+                    <div class="mcder-gnavItem"><a href="#">MORE&nbsp;<i class="fa-solid fa-angle-down"></i></a>
+                        <ul>
+                            <li><a href="/rules">Rules</a></li>
+                            <li><a href="/staff">Staff</a></li>
+                            <li><a href="/guide">Guide</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+                        {{!-- <img class="headerWave" src="{{asset "img/headerwave.svg"}}"> --}}
+
+            {{!-- <div class="mcder-gHead">
+                <div class="mcder-gHeadItem left">
+                    <i class="fa-solid fa-cubes"></i>
+                    <p class="joinCTA">MC.WinterCrest.NET</p>
+                    <p class="online"><span class="mcPlayers">23</span> Players Online</p>
+                </div>
+                <div class="mcder-gHeadItem logoSpacer">
+                    <a class="{{#unless @site.logo}} no-image{{/unless}}" href="{{@site.url}}">
+                        {{#if @site.logo}}
+                        <img src="{{@site.logo}}" alt="{{@site.title}}">
+                        {{else}}
+                        {{@site.title}}
+                        {{/if}}
+                    </a>
+                </div>
+                <div class="mcder-gHeadItem right">
+                    <i class="fa-brands fa-discord"></i>
+                    <p class="joinCTA">DISCORD.GG/WinterCrest</p>
+                    <p class="online"><span class="mcPlayers">23</span> Players Online</p>
+                </div>
+            </div> --}}
+        </header>
+        <header id="gh-head" class="gh-head outer{{#match @custom.header_style "Hidden"}} is-header-hidden{{/match}}">
+            <div class="gh-head-inner inner">
+                <div class="gh-head-brand">
+                    <a class="gh-head-logo{{#unless @site.logo}} no-image{{/unless}}" href="{{@site.url}}">
+                        {{#if @site.logo}}
+                        <img src="{{@site.logo}}" alt="{{@site.title}}">
+                        {{else}}
+                        {{@site.title}}
+                        {{/if}}
+                    </a>
+                    <button class="gh-search gh-icon-btn" data-ghost-search>{{> "icons/search"}}</button>
+                    <button class="gh-burger"></button>
+                </div>
+
+                <nav class="gh-head-menu">
+                    {{navigation}}
+                    {{#unless @site.members_enabled}}
+                    {{#match @custom.navigation_layout "Stacked"}}
+                    <button class="gh-search gh-icon-btn" data-ghost-search>{{> "icons/search"}}</button>
+                    {{/match}}
+                    {{/unless}}
+                </nav>
+
+                <div class="gh-head-actions">
+                    {{#unless @site.members_enabled}}
+                    {{^match @custom.navigation_layout "Stacked"}}
+                    <button class="gh-search gh-icon-btn" data-ghost-search>{{> "icons/search"}}</button>
+                    {{/match}}
+                    {{else}}
+                    <button class="gh-search gh-icon-btn" data-ghost-search>{{> "icons/search"}}</button>
+                    <div class="gh-head-members">
+                        {{#unless @member}}
+                        {{#unless @site.members_invite_only}}
+                        <a class="gh-head-link" href="#/portal/signin" data-portal="signin">Sign in</a>
+                        <a class="gh-head-button" href="#/portal/signup" data-portal="signup">Subscribe</a>
+                        {{else}}
+                        <a class="gh-head-button" href="#/portal/signin" data-portal="signin">Sign in</a>
+                        {{/unless}}
+                        {{else}}
+                        <a class="gh-head-button" href="#/portal/account" data-portal="account">Account</a>
+                        {{/unless}}
+                    </div>
+                    {{/unless}}
+                </div>
+            </div>
+        </header>
+
+        <div class="site-content">
+            {{!-- All other templates get inserted here, index.hbs, post.hbs, etc --}}
+            {{{body}}}
+        </div>
+
+
+
+        <footer class="site-foot">
+            <div class="inner container">
+                <section class="copyright">
+                    <p>WinterCrestMC © 2023</p>
+                    <p>
+                        We are not affiliated with Mojang, AB.
+                    </p>
+                </section>
+            </div>
+        </footer>
+        {{!-- The global footer at the very bottom of the screen --}}
+        {{!-- <footer class="site-footer outer">
+            <div class="inner">
+                <section class="copyright"><a href="{{@site.url}}">{{@site.title}}</a> &copy; {{date format="YYYY"}}
+                </section>
+                <nav class="site-footer-nav">
+                    {{navigation type="secondary"}}
+                </nav>
+                <div><a href="https://ghost.org/" target="_blank" rel="noopener">Powered by Ghost</a></div>
+            </div>
+        </footer> --}}
+
+    </div>
+    {{!-- /.viewport --}}
+
+
+    {{!-- Scripts - handle member signups, responsive videos, infinite scroll, floating headers, and galleries --}}
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous">
+    </script>
+    <script src="{{asset "built/casper.js"}}"></script>
+    <script>
+        $(document).ready(function () {
+            // Mobile Menu Trigger
+            $('.gh-burger').click(function () {
+                $('body').toggleClass('gh-head-open');
+            });
+            // FitVids - Makes video embeds responsive
+            $(".gh-content").fitVids();
+        });
+    </script>
+    <script src="https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
+<script src="https://cdn.rohanmcdermott.com/assets/js/clipboard.js"></script>
+    <script>
+    var ip = "PLAY.WINTERCRESTMC.COM:25565";
+
+    $(document).ready(function () {
+    updateCount();
+
+    });
+    updateCount();
+
+    function updateCount() {
+        $.getJSON('https://eu.mc-api.net/v3/server/info/' + ip, function (jd) {
+            if (jd.error) {
+                $('.mc-count').html('0');
+            } else {
+                $('.mc-count').html(jd.players.online);
+            }
+        });
+        setTimeout(updateCount, 59000);
+    }
+
+    new Clipboard('#mc-server', {
+        text: function () {
+            return ip;
+        }
+    });
+    
+    
+    $("#mc-server").click(function () {
+        swal({
+            title: "You copied the server IP!",
+            text: "We look forward to you joining us!",
+            icon: "success",
+            button: "Close",
+            timer: 150000
+        });
+    });
+</script>
+<script>
+    $.get('https://discordapp.com/api/guilds/265159280909352961/embed.json', function (e) {
+        var playerCount = e['presence_count'];
+        $('.discord-count').html(playerCount);
+    });
+</script>
+    {{!-- particles --}}
+    {{!-- <script>
+    </script> --}}
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 100,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    },
+                    "image": {
+                        "src": "img/github.svg",
+                        "width": 100,
+                        "height": 100
+                    }
+                },
+                "opacity": {
+                    "value": 0.6,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 5,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": false,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1.6,
+                    "direction": "bottom",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "window",
+                "events": {
+                    "onhover": {
+                        "enable": false,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 400,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+    {{!-- Ghost outputs required functional scripts with this tag - it should always be the last thing before the closing body tag --}}
+    {{ghost_foot}}
+
+</body>
+
+</html>
