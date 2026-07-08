@@ -4,27 +4,34 @@
 whose slug is "staff" (Pages -> New page -> slug: staff). --}}
 
 {{!-- ============================================================
-     HOW STAFF ARE POPULATED (live data, nothing hardcoded)
+     HOW TO ADD / EDIT / REMOVE STAFF (no Ghost accounts needed)
      ------------------------------------------------------------
-     Every card on this page comes straight from Ghost's Staff/Authors
-     data via the {{#get "authors"}} helper - the same way {{authors}}
-     already powers the byline on post.hbs and post-card.hbs elsewhere
-     in this theme. For each staff member:
+     Everyone on this page comes from a single Markdown TABLE you
+     write directly in this Page's content in Ghost's editor. There
+     are no author accounts and no published-post requirement - just
+     edit this one page whenever staff changes.
 
-       - Profile picture -> Settings > Staff > (member) > Profile picture
-                             (falls back to a placeholder if unset)
-       - Bio              -> Settings > Staff > (member) > Bio
-                             (shown under their name if present)
-       - Location field  -> repurposed as their RANK. Must match
-                             (case-insensitively) one of: Owner, Lead,
-                             Dev, Admin, Mods, Helpers, Trainees, Builders
+     In Ghost's editor, add a Markdown card with a table like this:
 
-     Ghost limitation (can't be worked around from the theme): the
-     public {{#get "authors"}} helper only returns authors who have at
-     least one PUBLISHED post credited to them. A staff member with no
-     published post won't appear here no matter what their Location is
-     set to - give them a real (or even a single placeholder) published
-     post to fix that.
+         | Name | Rank | Bio |
+         |---|---|---|
+         | Notch | Owner | Founder of the server. |
+         | Jeb | Admin | Keeps everything running. |
+
+       - Name  -> their in-game Minecraft username. Also used to
+                  auto-generate their avatar from their skin (via
+                  https://mc-heads.net) unless you add a 4th column.
+       - Rank  -> must be one of: Owner, Lead, Dev, Admin, Mods,
+                  Helpers, Trainees, Builders (case-insensitive).
+       - Bio   -> short blurb shown on their card. Leave the cell
+                  empty if you don't have one yet.
+       - Avatar (optional 4th column) -> a direct image URL if you'd
+                  rather use a custom picture instead of the
+                  auto-generated skin render.
+
+     You can also write any other content on this page as normal
+     (an intro paragraph, images, etc.) - the table is simply found
+     and read wherever it appears in the page.
      ============================================================ --}}
 
 <main id="site-main" class="site-main outer">
@@ -50,62 +57,111 @@ whose slug is "staff" (Pages -> New page -> slug: staff). --}}
                 <button class="staff-pill" data-filter="builders">Builders</button>
             </div>
 
-            <div class="staff-grid">
-                {{#get "authors" limit="all" order="name asc"}}
-                    {{#if authors}}
-                        {{#foreach authors}}
-                            <div class="staff-card" data-rank="{{location}}">
-                                <div class="staff-card-img" style="background-image:url({{#if profile_image}}{{img_url profile_image size="m"}}{{else}}{{asset "img/bg.png"}}{{/if}})"></div>
-                                <h3 class="staff-card-name">{{name}}</h3>
-                                <p class="staff-card-rank">{{#if location}}{{location}}{{else}}Unranked{{/if}}</p>
-                                {{#if bio}}
-                                    <p class="staff-card-bio">{{bio}}</p>
-                                {{/if}}
-                            </div>
-                        {{/foreach}}
-                    {{/if}}
-                {{/get}}
-            </div>
+            <div class="staff-grid" id="staff-grid"></div>
 
-            <p class="staff-empty" data-state="no-authors">No staff have a published post yet, so none can show up here. Give each staff member at least one published post to fix this.</p>
+            <p class="staff-empty" data-state="no-table" style="display:none;">No staff table found on this page yet. Add a Markdown table (Name / Rank / Bio) to the Staff page content in Ghost.</p>
             <p class="staff-empty" data-state="no-match" style="display:none;">No staff found for this rank yet.</p>
         </section>
+
+        {{!-- The page's own written content (incl. the staff Markdown table) renders here,
+             hidden from view - the script below reads the table out of it and builds the
+             cards above. Any other text/images you write on the page stay hidden too, so
+             keep the table as the only thing on this page (or accept that other content
+             won't be visible). --}}
+        <div id="staff-source" style="display:none">{{#post}}{{content}}{{/post}}</div>
 
     </div>
 </main>
 
 <script>
     (function () {
+        var KNOWN_RANKS = ['owner', 'lead', 'dev', 'admin', 'mods', 'helpers', 'trainees', 'builders'];
+
+        function parseStaffTable() {
+            var table = document.querySelector('#staff-source table');
+            if (!table) return [];
+
+            var rows = table.querySelectorAll('tbody tr');
+            var staff = [];
+            rows.forEach(function (row) {
+                var cells = row.querySelectorAll('td');
+                if (cells.length < 2) return;
+                var name = (cells[0].textContent || '').trim();
+                var rank = (cells[1].textContent || '').trim();
+                var bio = cells.length > 2 ? (cells[2].textContent || '').trim() : '';
+                var avatar = cells.length > 3 ? (cells[3].textContent || '').trim() : '';
+                if (!name || !rank) return;
+                if (!avatar) {
+                    avatar = 'https://mc-heads.net/avatar/' + encodeURIComponent(name) + '/300';
+                }
+                staff.push({ name: name, rank: rank, bio: bio, avatar: avatar });
+            });
+            return staff;
+        }
+
+        function renderStaff(staff) {
+            var grid = document.getElementById('staff-grid');
+            grid.innerHTML = '';
+            staff.forEach(function (member) {
+                var card = document.createElement('div');
+                card.className = 'staff-card';
+                card.setAttribute('data-rank', member.rank.toLowerCase());
+
+                var img = document.createElement('div');
+                img.className = 'staff-card-img';
+                img.style.backgroundImage = 'url(' + member.avatar + ')';
+                card.appendChild(img);
+
+                var name = document.createElement('h3');
+                name.className = 'staff-card-name';
+                name.textContent = member.name;
+                card.appendChild(name);
+
+                var rank = document.createElement('p');
+                rank.className = 'staff-card-rank';
+                rank.textContent = member.rank;
+                card.appendChild(rank);
+
+                if (member.bio) {
+                    var bio = document.createElement('p');
+                    bio.className = 'staff-card-bio';
+                    bio.textContent = member.bio;
+                    card.appendChild(bio);
+                }
+
+                grid.appendChild(card);
+            });
+        }
+
+        var staff = parseStaffTable();
+        renderStaff(staff);
+
         var pills = document.querySelectorAll('.staff-pill');
-        var cards = document.querySelectorAll('.staff-card');
-        var noAuthorsMsg = document.querySelector('.staff-empty[data-state="no-authors"]');
+        var noTableMsg = document.querySelector('.staff-empty[data-state="no-table"]');
         var noMatchMsg = document.querySelector('.staff-empty[data-state="no-match"]');
 
-        // Show live counts on each pill, e.g. "MODS (4)", based on what actually rendered.
+        if (noTableMsg) {
+            noTableMsg.style.display = staff.length === 0 ? '' : 'none';
+        }
+
+        // Live counts on each pill, e.g. "MODS (4)", based on what actually parsed.
         pills.forEach(function (pill) {
             var rank = pill.getAttribute('data-filter');
-            var count = 0;
-            cards.forEach(function (card) {
-                if ((card.getAttribute('data-rank') || '').trim().toLowerCase() === rank) count++;
-            });
+            var count = staff.filter(function (m) { return m.rank.toLowerCase() === rank; }).length;
             pill.textContent = pill.textContent + ' (' + count + ')';
         });
 
         function applyFilter(rank) {
+            var cards = document.querySelectorAll('.staff-card');
             var visibleCount = 0;
             cards.forEach(function (card) {
-                var cardRank = (card.getAttribute('data-rank') || '').trim().toLowerCase();
-                var match = cardRank === rank;
+                var match = (card.getAttribute('data-rank') || '') === rank;
                 card.style.display = match ? '' : 'none';
                 if (match) visibleCount++;
             });
             if (noMatchMsg) {
-                noMatchMsg.style.display = (cards.length > 0 && visibleCount === 0) ? '' : 'none';
+                noMatchMsg.style.display = (staff.length > 0 && visibleCount === 0) ? '' : 'none';
             }
-        }
-
-        if (noAuthorsMsg) {
-            noAuthorsMsg.style.display = cards.length === 0 ? '' : 'none';
         }
 
         pills.forEach(function (pill) {
@@ -118,7 +174,7 @@ whose slug is "staff" (Pages -> New page -> slug: staff). --}}
             pill.setAttribute('aria-pressed', pill.classList.contains('is-active') ? 'true' : 'false');
         });
 
-        if (cards.length > 0) {
+        if (staff.length > 0) {
             applyFilter('owner');
         }
     })();
