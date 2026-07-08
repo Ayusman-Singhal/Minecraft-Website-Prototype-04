@@ -28,7 +28,7 @@
             {{#if @site.cover_image}}
             background-image: url({{img_url @site.cover_image size="xl"}});
             {{else}}
-            background-image: url({{asset "img/bg.png"}});
+            background-image: url({{asset "img/wintercrest-banner.png"}});
             {{/if}}
             background-size: cover;
             background-position: center;
@@ -260,7 +260,7 @@
                     {{#if @site.logo}}
                     <a href="{{@site.url}}"><img class="hdr-v5-logo-img" src="{{@site.logo}}" alt="{{@site.title}}"></a>
                     {{else}}
-                    <a class="word" href="{{@site.url}}">Winter<span>Crest</span>MC</a>
+                    <a href="{{@site.url}}"><img class="hdr-v5-logo-img" src="{{asset "img/wintercrest-logo.png"}}" alt="{{@site.title}}"></a>
                     {{/if}}
                     <div class="hdr-v5-domain-row">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--primary)"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
