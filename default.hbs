@@ -20,6 +20,184 @@
         rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{asset "built/screen.css"}}" />
     <link rel="stylesheet" type="text/css" href="{{asset "built/mcdermott.css"}}" />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .hdr-v5-hero {
+            position: relative;
+            height: 400px;
+            {{#if @site.cover_image}}
+            background-image: url({{img_url @site.cover_image size="xl"}});
+            {{else}}
+            background-image: url({{asset "img/bg.png"}});
+            {{/if}}
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+        .hdr-v5-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(6,10,20,0.35) 0%, rgba(6,10,20,0.55) 60%, var(--dark1) 100%);
+        }
+        .hdr-v5-brand {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding-top: 40px;
+        }
+        .hdr-v5-logo-img {
+            height: 220px;
+            width: auto;
+            max-width: 88%;
+            margin: 0 auto;
+            display: block;
+            filter: drop-shadow(0 10px 26px rgba(0,0,0,0.5));
+        }
+        .hdr-v5-brand .word {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 3.4rem;
+            letter-spacing: -0.02em;
+            color: #fff;
+            text-shadow: 0 4px 24px rgba(0,0,0,0.4);
+            text-decoration: none;
+        }
+        .hdr-v5-brand .word span { color: var(--primary); }
+        .hdr-v5-domain-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 14px;
+        }
+        .hdr-v5-domain-row svg {
+            flex-shrink: 0;
+            opacity: .85;
+        }
+        .hdr-v5-domain {
+            display: inline-block;
+            font-family: 'Rajdhani', 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 2.3rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            text-decoration: none;
+            background: linear-gradient(180deg, #ffffff 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 18px rgba(147,203,252,0.5);
+            line-height: 1;
+        }
+        .hdr-v5-stat {
+            position: absolute;
+            top: 32px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 8px 16px 8px 8px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+        }
+        .hdr-v5-stat.left { left: 40px; }
+        .hdr-v5-stat.right { right: 40px; flex-direction: row-reverse; padding: 8px 8px 8px 16px; }
+        .hdr-v5-stat-ico {
+            position: relative;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+        }
+        .hdr-v5-stat.left .hdr-v5-stat-ico { background: var(--secondary); }
+        .hdr-v5-stat.right .hdr-v5-stat-ico { background: #5865F2; }
+        .hdr-v5-stat-badge {
+            position: absolute;
+            top: -9px; right: -7px;
+            background: var(--primary);
+            color: #0d1626;
+            font-weight: 900;
+            font-size: 1.05rem;
+            padding: 2px 7px;
+            border-radius: 50px;
+            border: 2px solid var(--dark1);
+        }
+        .hdr-v5-stat.right .hdr-v5-stat-badge { right: auto; left: -7px; }
+        .hdr-v5-stat-text .platform {
+            font-family: 'Rajdhani', 'Nunito', sans-serif;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: 0.02em;
+        }
+        .hdr-v5-stat.right .hdr-v5-stat-text { text-align: right; }
+        .hdr-v5-stat-text .sub {
+            color: rgba(255,255,255,0.6);
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .hdr-v5-nav {
+            position: relative;
+            z-index: 2;
+            background: var(--dark1);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 12px 20px -10px rgba(0,0,0,0.5);
+        }
+        .hdr-v5-nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+        .hdr-v5-links { display: flex; }
+        .hdr-v5-links a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 9px;
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-family: 'Rajdhani', 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.03em;
+            padding: 22px 20px;
+            border-bottom: 3px solid transparent;
+        }
+        .hdr-v5-links a svg { flex-shrink: 0; }
+        .hdr-v5-links a.active { color: var(--primary); border-color: var(--primary); }
+        .hdr-v5-store {
+            background: var(--secondary);
+            color: #fff;
+            font-family: 'Rajdhani', 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 1.45rem;
+            letter-spacing: 0.02em;
+            padding: 12px 22px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        @media (max-width: 900px) {
+            .hdr-v5-stat.left, .hdr-v5-stat.right { position: static; margin: 10px auto 0; justify-content: center; }
+            .hdr-v5-links a span.lbl { display: none; }
+        }
+    </style>
 
 
 
@@ -60,28 +238,51 @@
         <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 
-        <header class="mcder-header" style="background-image: url({{asset 'img/headerwave.svg'}}), url({{img_url @site.cover_image size='xl'}})">
-            <div id="topbar">
-                <div class="inner">
-                    <div class="block left" id="mc-server">
-                        <div class="icon"><i class="fa-solid fa-snowflake"></i></div>
-                        <div class="text">
-                            <p class="platform">play.wintercrestmc.com</p>
-                            <p class="count"><span class="mc-count">0</span> players online</p>
-                        </div>
+        <header class="hdr-v5">
+            <div class="hdr-v5-hero">
+                <div class="hdr-v5-stat left" id="mc-server">
+                    <div class="hdr-v5-stat-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg><span class="hdr-v5-stat-badge mc-count">0</span></div>
+                    <div class="hdr-v5-stat-text">
+                        <p class="platform">play.wintercrestmc.com</p>
+                        <p class="sub">Click to copy</p>
                     </div>
-                    <a href="https://discord.gg/wintercrest" target="_blank" class="block right discord-server">
-                        <div class="text">
-                            <p class="platform">Discord Server</p>
-                            <p class="count"><span class="discord-count">0</span> users online</p>
-                        </div>
-                        <div class="icon"><i class="fab fa-discord"></i></div>
-                    </a>
+                </div>
+
+                <a class="hdr-v5-stat right" href="https://discord.gg/wintercrest" target="_blank">
+                    <div class="hdr-v5-stat-ico" style="background:#5865F2"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.076.076 0 0 0-.04.106c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.955 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg><span class="hdr-v5-stat-badge discord-count">0</span></div>
+                    <div class="hdr-v5-stat-text">
+                        <p class="platform">Discord Server</p>
+                        <p class="sub">Click to join</p>
+                    </div>
+                </a>
+
+                <div class="hdr-v5-brand">
+                    {{#if @site.logo}}
+                    <a href="{{@site.url}}"><img class="hdr-v5-logo-img" src="{{@site.logo}}" alt="{{@site.title}}"></a>
+                    {{else}}
+                    <a class="word" href="{{@site.url}}">Winter<span>Crest</span>MC</a>
+                    {{/if}}
+                    <div class="hdr-v5-domain-row">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--primary)"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
+                        <a class="hdr-v5-domain" href="{{@site.url}}">play.wintercrestmc.com</a>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--primary)"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
+                    </div>
                 </div>
             </div>
-            {{!-- <img class="headerWave" src="{{asset "img/snowwave.svg"}}"> --}}
-
-
+            <nav class="hdr-v5-nav">
+                <div class="hdr-v5-nav-inner">
+                    <div class="hdr-v5-links">
+                        <a href="/" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span class="lbl">Home</span></a>
+                        <a href="/staff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="lbl">Staff</span></a>
+                        <a href="/vote"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12l3 3 5-6"/></svg><span class="lbl">Vote</span></a>
+                        <a href="/guide"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg><span class="lbl">Guide</span></a>
+                        <a href="/rules"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="lbl">Rules</span></a>
+                    </div>
+                    <a class="hdr-v5-store" href="https://store.wintercrestmc.com/"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Visit our Store</a>
+                </div>
+            </nav>
+        </header>
+        <div style="display:none">
             <div class="mobNavBar" onclick="openMobNav()"><i class="fa-solid fa-bars"></i></div>
             <script>
                 function openMobNav() {
@@ -92,39 +293,7 @@
                     document.getElementById("mcder-mobNav").style.height = "0%";
                 }
             </script>
-<a class="headerlogo {{#unless @site.logo}} no-image{{/unless}}"
-                            href="{{@site.url}}">
-                            {{#if @site.logo}}
-                            <img src="{{@site.logo}}" alt="{{@site.title}}">
-                            {{else}}
-                            {{@site.title}}
-                            {{/if}}
-                        </a>
-            <nav class="mcder-nav">
-                <div class="mcder-gNav">
-                    <div class="mcder-gnavItem"><a href="/">HOME</a></div>
-                    <div class="mcder-gnavItem"><a href="/vote">VOTE</a></div>
-                    <div class="mcder-gnavItem logoNav">
-                         {{!-- <a class="{{#unless @site.logo}} no-image{{/unless}}"
-                            href="{{@site.url}}">
-                            {{#if @site.logo}}
-                            <img src="{{@site.logo}}" alt="{{@site.title}}">
-                            {{else}}
-                            {{@site.title}}
-                            {{/if}}
-                        </a> --}}
-                        </div>
-                    <div class="mcder-gnavItem"><a href="https://store.wintercrestmc.com/">STORE</a></div>
-                    <div class="mcder-gnavItem"><a href="#">MORE&nbsp;<i class="fa-solid fa-angle-down"></i></a>
-                        <ul>
-                            <li><a href="/rules">Rules</a></li>
-                            <li><a href="/staff">Staff</a></li>
-                            <li><a href="/guide">Guide</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-                        {{!-- <img class="headerWave" src="{{asset "img/headerwave.svg"}}"> --}}
+        </div>
 
             {{!-- <div class="mcder-gHead">
                 <div class="mcder-gHeadItem left">
