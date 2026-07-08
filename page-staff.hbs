@@ -1,0 +1,119 @@
+{{!< default}}
+
+{{!-- Staff page. This template renders automatically for any Ghost page
+whose slug is "staff" (Pages -> New page -> slug: staff). --}}
+
+{{!-- ============================================================
+     HOW STAFF ARE POPULATED
+     ------------------------------------------------------------
+     Staff members come from Ghost Authors (Settings -> Staff).
+     For each staff member:
+       - Profile picture  -> used as their card avatar (upload their MC skin render)
+       - Location field   -> used as their RANK. Must match (case-insensitive)
+                              one of: Owner, Lead, Dev, Admin, Mods, Helpers,
+                              Trainees, Builders
+     IMPORTANT Ghost limitation: {{#get "authors"}} only returns authors
+     who have at least ONE published post. If a staff member doesn't show
+     up here, assign them as the author on any published post.
+
+     If that limitation is a dealbreaker, scroll to the bottom of this
+     file for a commented-out FALLBACK block that uses a hardcoded JS
+     array instead of Ghost Authors.
+     ============================================================ --}}
+
+<main id="site-main" class="site-main outer">
+    <div class="inner staff-page">
+
+        <aside class="staff-apply">
+            <h2><i class="fa-solid fa-pen-to-square"></i> Staff Application</h2>
+            <p>Ready to be part of the Staff Team? Take the next step and send in your application here to showcase your skills and potential!</p>
+            <a class="staff-apply-btn" href="https://discord.gg/wintercrest" target="_blank" rel="noopener">Apply Now</a>
+        </aside>
+
+        <section class="staff-team">
+            <h2 class="staff-team-title">Our Staff Team</h2>
+
+            <div class="staff-filters">
+                <button class="staff-pill is-active" data-filter="owner">Owner</button>
+                <button class="staff-pill" data-filter="lead">Lead</button>
+                <button class="staff-pill" data-filter="dev">Dev</button>
+                <button class="staff-pill" data-filter="admin">Admin</button>
+                <button class="staff-pill" data-filter="mods">Mods</button>
+                <button class="staff-pill" data-filter="helpers">Helpers</button>
+                <button class="staff-pill" data-filter="trainees">Trainees</button>
+                <button class="staff-pill" data-filter="builders">Builders</button>
+            </div>
+
+            <div class="staff-grid">
+                {{#get "authors" limit="all"}}
+                    {{#foreach authors}}
+                        <div class="staff-card" data-rank="{{location}}">
+                            <div class="staff-card-img" style="background-image:url({{#if profile_image}}{{img_url profile_image size="m"}}{{else}}{{asset "img/bg.png"}}{{/if}})"></div>
+                            <h3 class="staff-card-name">{{name}}</h3>
+                            <p class="staff-card-rank">{{location}}</p>
+                        </div>
+                    {{/foreach}}
+                {{/get}}
+            </div>
+
+            <p class="staff-empty" style="display:none;">No staff found for this rank yet.</p>
+        </section>
+
+    </div>
+</main>
+
+<script>
+    (function () {
+        var pills = document.querySelectorAll('.staff-pill');
+        var cards = document.querySelectorAll('.staff-card');
+        var emptyMsg = document.querySelector('.staff-empty');
+
+        function applyFilter(rank) {
+            var visibleCount = 0;
+            cards.forEach(function (card) {
+                var cardRank = (card.getAttribute('data-rank') || '').trim().toLowerCase();
+                var match = cardRank === rank;
+                card.style.display = match ? '' : 'none';
+                if (match) visibleCount++;
+            });
+            if (emptyMsg) {
+                emptyMsg.style.display = visibleCount === 0 ? '' : 'none';
+            }
+        }
+
+        pills.forEach(function (pill) {
+            pill.addEventListener('click', function () {
+                pills.forEach(function (p) { p.classList.remove('is-active'); });
+                pill.classList.add('is-active');
+                applyFilter(pill.getAttribute('data-filter'));
+            });
+        });
+
+        applyFilter('owner');
+    })();
+</script>
+
+{{!-- ============================================================
+     FALLBACK (optional): hardcoded staff list instead of Ghost Authors.
+     Uncomment this block, delete the {{#get "authors"}} block above,
+     and edit the `staff` array with real names/ranks/avatar URLs.
+
+<div class="staff-grid" id="staff-grid-fallback"></div>
+<script>
+    var staff = [
+        { name: "Steve", rank: "Owner", avatar: "https://mc-heads.net/avatar/Steve/300" },
+        { name: "Alex",  rank: "Admin", avatar: "https://mc-heads.net/avatar/Alex/300" }
+    ];
+    var grid = document.getElementById('staff-grid-fallback');
+    staff.forEach(function (member) {
+        var card = document.createElement('div');
+        card.className = 'staff-card';
+        card.setAttribute('data-rank', member.rank.toLowerCase());
+        card.innerHTML =
+            '<div class="staff-card-img" style="background-image:url(' + member.avatar + ')"></div>' +
+            '<h3 class="staff-card-name">' + member.name + '</h3>' +
+            '<p class="staff-card-rank">' + member.rank + '</p>';
+        grid.appendChild(card);
+    });
+</script>
+     ============================================================ --}}
