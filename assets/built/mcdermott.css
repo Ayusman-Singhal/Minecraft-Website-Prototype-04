@@ -663,6 +663,153 @@ html.dark-mode :is(.post-card-tags,.post-card-meta,.article-tag a,.byline-meta-c
 
 
 
+/* STAFF PAGE */
+
+.staff-page {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  align-items: start;
+  gap: 30px;
+  padding: 40px max(4vmin, 20px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.staff-apply,
+.staff-team {
+  backdrop-filter: blur(7px);
+  background-color: #31313161;
+  border-radius: 20px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+}
+
+.staff-apply h2 {
+  font-size: 1.4rem;
+  font-weight: 900;
+  margin: 0 0 12px;
+}
+
+.staff-apply h2 i {
+  color: var(--primary);
+  margin-right: 8px;
+}
+
+.staff-apply p {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.staff-apply-btn {
+  display: block;
+  text-align: center;
+  background: var(--primary);
+  color: var(--dark1);
+  font-weight: 900;
+  text-transform: uppercase;
+  border-radius: 12px;
+  padding: 14px 20px;
+  transition: all 0.25s;
+}
+
+.staff-apply-btn:hover {
+  opacity: 0.7;
+  transition: all 0.25s;
+}
+
+.staff-team-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+  margin: 0 0 20px;
+  padding-left: 14px;
+  border-left: 5px solid var(--primary);
+}
+
+.staff-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.staff-pill {
+  background-color: var(--dark2);
+  color: var(--txtWhite);
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  border-radius: 50em;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.staff-pill:hover {
+  background-color: var(--primary_30);
+  transition: all 0.25s;
+}
+
+.staff-pill.is-active {
+  background-color: var(--primary);
+  color: var(--dark1);
+}
+
+.staff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+.staff-card {
+  text-align: center;
+  background-color: var(--dark2);
+  border-radius: 16px;
+  overflow: hidden;
+  padding-bottom: 16px;
+  transition: all 0.25s;
+}
+
+.staff-card:hover {
+  transform: translateY(-5px);
+  transition: all 0.25s;
+}
+
+.staff-card-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--dark3);
+  margin-bottom: 14px;
+}
+
+.staff-card-name {
+  font-size: 1.05rem;
+  font-weight: 900;
+  margin: 0 0 4px;
+}
+
+.staff-card-rank {
+  color: var(--primary_70);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.staff-empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 30px 0;
+}
+
+@media (max-width: 800px) {
+  .staff-page {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* PARTICLES */
 
 /* ---- particles.js container ---- */
