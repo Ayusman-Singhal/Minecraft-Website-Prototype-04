@@ -272,7 +272,7 @@
             <nav class="hdr-v5-nav">
                 <div class="hdr-v5-nav-inner">
                     <div class="hdr-v5-links">
-                        <a href="/" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span class="lbl">Home</span></a>
+                        <a href="/"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span class="lbl">Home</span></a>
                         <a href="/staff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="lbl">Staff</span></a>
                         <a href="/vote"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12l3 3 5-6"/></svg><span class="lbl">Vote</span></a>
                         <a href="/guide"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg><span class="lbl">Guide</span></a>
@@ -282,6 +282,17 @@
                 </div>
             </nav>
         </header>
+        <script>
+            (function () {
+                var links = document.querySelectorAll('.hdr-v5-links a');
+                var path = window.location.pathname.replace(/\/+$/, '') || '/';
+                links.forEach(function (link) {
+                    var linkPath = link.getAttribute('href').replace(/\/+$/, '') || '/';
+                    var isMatch = linkPath === '/' ? path === '/' : (path === linkPath || path.indexOf(linkPath + '/') === 0);
+                    link.classList.toggle('active', isMatch);
+                });
+            })();
+        </script>
         <div style="display:none">
             <div class="mobNavBar" onclick="openMobNav()"><i class="fa-solid fa-bars"></i></div>
             <script>
