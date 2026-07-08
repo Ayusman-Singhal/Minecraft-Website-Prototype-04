@@ -1,0 +1,125 @@
+{{!< default}}
+
+{{!-- Staff page. This template renders automatically for any Ghost page
+whose slug is "staff" (Pages -> New page -> slug: staff). --}}
+
+{{!-- ============================================================
+     HOW STAFF ARE POPULATED (live data, nothing hardcoded)
+     ------------------------------------------------------------
+     Every card on this page comes straight from Ghost's Staff/Authors
+     data via the {{#get "authors"}} helper - the same way {{authors}}
+     already powers the byline on post.hbs and post-card.hbs elsewhere
+     in this theme. For each staff member:
+
+       - Profile picture -> Settings > Staff > (member) > Profile picture
+                             (falls back to a placeholder if unset)
+       - Bio              -> Settings > Staff > (member) > Bio
+                             (shown under their name if present)
+       - Location field  -> repurposed as their RANK. Must match
+                             (case-insensitively) one of: Owner, Lead,
+                             Dev, Admin, Mods, Helpers, Trainees, Builders
+
+     Ghost limitation (can't be worked around from the theme): the
+     public {{#get "authors"}} helper only returns authors who have at
+     least one PUBLISHED post credited to them. A staff member with no
+     published post won't appear here no matter what their Location is
+     set to - give them a real (or even a single placeholder) published
+     post to fix that.
+     ============================================================ --}}
+
+<main id="site-main" class="site-main outer">
+    <div class="inner staff-page">
+
+        <aside class="staff-apply">
+            <h2><i class="fa-solid fa-pen-to-square"></i> Staff Application</h2>
+            <p>Ready to be part of the Staff Team? Take the next step and send in your application here to showcase your skills and potential!</p>
+            <a class="staff-apply-btn" href="https://discord.gg/wintercrest" target="_blank" rel="noopener">Apply Now</a>
+        </aside>
+
+        <section class="staff-team">
+            <h2 class="staff-team-title">Our Staff Team</h2>
+
+            <div class="staff-filters">
+                <button class="staff-pill is-active" data-filter="owner">Owner</button>
+                <button class="staff-pill" data-filter="lead">Lead</button>
+                <button class="staff-pill" data-filter="dev">Dev</button>
+                <button class="staff-pill" data-filter="admin">Admin</button>
+                <button class="staff-pill" data-filter="mods">Mods</button>
+                <button class="staff-pill" data-filter="helpers">Helpers</button>
+                <button class="staff-pill" data-filter="trainees">Trainees</button>
+                <button class="staff-pill" data-filter="builders">Builders</button>
+            </div>
+
+            <div class="staff-grid">
+                {{#get "authors" limit="all" order="name asc"}}
+                    {{#if authors}}
+                        {{#foreach authors}}
+                            <div class="staff-card" data-rank="{{location}}">
+                                <div class="staff-card-img" style="background-image:url({{#if profile_image}}{{img_url profile_image size="m"}}{{else}}{{asset "img/bg.png"}}{{/if}})"></div>
+                                <h3 class="staff-card-name">{{name}}</h3>
+                                <p class="staff-card-rank">{{#if location}}{{location}}{{else}}Unranked{{/if}}</p>
+                                {{#if bio}}
+                                    <p class="staff-card-bio">{{bio}}</p>
+                                {{/if}}
+                            </div>
+                        {{/foreach}}
+                    {{/if}}
+                {{/get}}
+            </div>
+
+            <p class="staff-empty" data-state="no-authors">No staff have a published post yet, so none can show up here. Give each staff member at least one published post to fix this.</p>
+            <p class="staff-empty" data-state="no-match" style="display:none;">No staff found for this rank yet.</p>
+        </section>
+
+    </div>
+</main>
+
+<script>
+    (function () {
+        var pills = document.querySelectorAll('.staff-pill');
+        var cards = document.querySelectorAll('.staff-card');
+        var noAuthorsMsg = document.querySelector('.staff-empty[data-state="no-authors"]');
+        var noMatchMsg = document.querySelector('.staff-empty[data-state="no-match"]');
+
+        // Show live counts on each pill, e.g. "MODS (4)", based on what actually rendered.
+        pills.forEach(function (pill) {
+            var rank = pill.getAttribute('data-filter');
+            var count = 0;
+            cards.forEach(function (card) {
+                if ((card.getAttribute('data-rank') || '').trim().toLowerCase() === rank) count++;
+            });
+            pill.textContent = pill.textContent + ' (' + count + ')';
+        });
+
+        function applyFilter(rank) {
+            var visibleCount = 0;
+            cards.forEach(function (card) {
+                var cardRank = (card.getAttribute('data-rank') || '').trim().toLowerCase();
+                var match = cardRank === rank;
+                card.style.display = match ? '' : 'none';
+                if (match) visibleCount++;
+            });
+            if (noMatchMsg) {
+                noMatchMsg.style.display = (cards.length > 0 && visibleCount === 0) ? '' : 'none';
+            }
+        }
+
+        if (noAuthorsMsg) {
+            noAuthorsMsg.style.display = cards.length === 0 ? '' : 'none';
+        }
+
+        pills.forEach(function (pill) {
+            pill.addEventListener('click', function () {
+                pills.forEach(function (p) { p.classList.remove('is-active'); p.setAttribute('aria-pressed', 'false'); });
+                pill.classList.add('is-active');
+                pill.setAttribute('aria-pressed', 'true');
+                applyFilter(pill.getAttribute('data-filter'));
+            });
+            pill.setAttribute('aria-pressed', pill.classList.contains('is-active') ? 'true' : 'false');
+        });
+
+        if (cards.length > 0) {
+            applyFilter('owner');
+        }
+    })();
+</script>
